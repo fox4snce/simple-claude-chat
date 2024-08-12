@@ -1,0 +1,40 @@
+.conversation-sidebar {
+    flex: 0 0 200px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #dee2e6;
+}
+
+#conversation-list {
+    margin-top: 10px;
+}
+
+.conversation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.conversation-item button {
+    padding: 2px 5px;
+    margin: 0 2px;
+    font-size: 0.8em;
+}
+
+.conversation-item .delete-btn {
+    background-color: #dc3545;
+}
+
+.conversation-item .delete-btn:hover {
+    background-color: #c82333;
+}
+
+#new-conversation-btn {
+    width: 100%;
+    margin-bottom: 10px;
+}
