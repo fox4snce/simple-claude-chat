@@ -36,12 +36,16 @@ body {
     word-wrap: break-word;
 }
 
+
+
 .user-message {
     background-color: #007bff;
     color: white;
     align-self: flex-end;
     margin-left: auto;
 }
+
+
 
 .assistant-message {
     background-color: #e9ecef;
@@ -120,3 +124,71 @@ button:hover {
     padding-left: 10px;
     color: #6c757d;
 }
+
+.input-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    min-height: 50px;
+    max-height: 150px;
+    resize: vertical;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#send-button {
+    align-self: flex-end;
+    height: 50px;
+}
+
+
+
+.user-message-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+.info-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+
+.token-info-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.token-info-wrapper label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#max-tokens {
+    width: 100px;
+    padding: 5px;
+    margin-bottom: 0;
+}
+
+#token-info, #cost-info {
+    margin-top: 0;
+    margin-right: 20px;
+    font-style: italic;
+    color: #666;
+}
+

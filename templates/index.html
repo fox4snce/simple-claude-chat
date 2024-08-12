@@ -19,11 +19,18 @@
         <div class="chat-column">
             <h1>Chat</h1>
             <div id="chat-container"></div>
-            <input type="number" id="max-tokens" placeholder="Max tokens (default: 10000)" value="10000">
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button id="send-button">Send</button>
-            <div id="token-info"></div>
-            <div id="cost-info"></div>
+            <div class="input-container">
+                <textarea id="user-input" placeholder="Type a message..." rows="3"></textarea>
+                <button id="send-button">Send</button>
+            </div>
+            <div class="info-container">
+                <div class="token-info-wrapper">
+                    <label for="max-tokens">Max History Tokens:</label>
+                    <input type="number" id="max-tokens" placeholder="Default: 10000" value="10000">
+                </div>
+                <div id="token-info"></div>
+                <div id="cost-info"></div>
+            </div>
         </div>
         <div class="prompt-column">
             <h2>System Prompt</h2>

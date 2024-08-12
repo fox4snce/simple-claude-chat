@@ -24,9 +24,8 @@ loadPromptButton.addEventListener('click', loadPrompt);
 deletePromptButton.addEventListener('click', deletePrompt);
 newConversationBtn.addEventListener('click', startNewConversation);
 
-
-userInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
+userInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault(); // Prevent default form submission
         sendMessage();
     }
@@ -39,6 +38,7 @@ function sendMessage() {
     if (message) {
         addMessage('user', message);
         userInput.value = '';
+        userInput.style.height = 'auto'; // Reset height
 
         fetch('/chat', {
             method: 'POST',
@@ -71,7 +71,11 @@ function addMessage(sender, text) {
     if (sender === 'assistant') {
         messageDiv.innerHTML = marked.parse(text);
     } else {
-        messageDiv.textContent = text;
+        // For user messages, preserve whitespace
+        const preElement = document.createElement('pre');
+        preElement.classList.add('user-message-content');
+        preElement.textContent = text;
+        messageDiv.appendChild(preElement);
     }
     
     chatContainer.appendChild(messageDiv);
@@ -295,4 +299,10 @@ function deleteConversation(conversationId) {
 document.addEventListener('DOMContentLoaded', () => {
     loadSavedPrompts();
     updateConversationList();
+    
+    // Add auto-resize functionality to the textarea
+    userInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
 });
