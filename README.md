@@ -20,7 +20,7 @@ Simple Claude Chat is a lightweight, single-user, local chat application for int
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/simple-claude-chat.git
+   git clone https://github.com/fox4snce/simple-claude-chat.git
    cd simple-claude-chat
    ```
 
