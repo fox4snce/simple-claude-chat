@@ -14,7 +14,7 @@ app.register_blueprint(conversation_routes)
 client = anth.client
 
 current_conversation_id = None
-current_system_prompt = ""
+app.config['current_system_prompt'] = ""
 
 @app.route('/')
 def index():
@@ -22,7 +22,7 @@ def index():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    global current_conversation_id, current_system_prompt
+    global current_system_prompt, current_conversation_id
     
     data = request.get_json()
     user_message = data['user_message']
@@ -60,8 +60,9 @@ def chat():
         full_message = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in conversation['messages']])
         input_tokens = client.count_tokens(full_message)
 
-    response_text = anth.generate_text_response(
-        system=current_system_prompt,
+    
+    response_text = anth.generate_response(
+        system=app.config['current_system_prompt'],
         user_message=full_message,
         max_tokens=MAX_OUTPUT_TOKENS,
         temperature=0.7
@@ -97,7 +98,7 @@ def chat():
 
     Suggested name:"""
 
-        conversation_name = anth.generate_text_response(
+        conversation_name = anth.generate_response(
             system="You are an expert at creating concise, relevant titles for conversations. Your task is to generate extremely short (1-5 words) but descriptive names based on the conversation content. Focus on the main topic or theme.",
             user_message=name_prompt,
             max_tokens=10,
@@ -139,13 +140,13 @@ def set_current_conversation():
 
 @app.route('/system_prompt', methods=['GET', 'POST'])
 def system_prompt():
-    global current_system_prompt
     if request.method == 'POST':
         data = request.get_json()
-        current_system_prompt = data['system_prompt']
+        app.config['current_system_prompt'] = data['system_prompt']
+        print(f"System prompt updated to: {app.config['current_system_prompt']}")  # Debug print
         return jsonify({'status': 'system prompt updated'})
     else:
-        return jsonify({'system_prompt': current_system_prompt})
+        return jsonify({'system_prompt': app.config['current_system_prompt']})
 
 if __name__ == '__main__':
     app.run(debug=True)

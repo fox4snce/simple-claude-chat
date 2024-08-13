@@ -8,7 +8,8 @@ client = anthropic.Anthropic()
 def generate_response(system=None, user_message=None, max_tokens=4096, temperature=0.8):
     
 
-    system_prompt = '''
+    system_prompt = f'''
+    
     Always use well-formatted markdown.
 
     {system}
@@ -30,7 +31,7 @@ def generate_response(system=None, user_message=None, max_tokens=4096, temperatu
     
     
     response = client.messages.create(**kwargs)
-    return response
+    return response.content[0].text
 
 def generate_text_response(system=None, user_message=None, max_tokens=4096, temperature=0.8):
     response = generate_response(system, user_message, max_tokens, temperature)
