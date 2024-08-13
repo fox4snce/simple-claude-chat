@@ -53,7 +53,7 @@ Simple Claude Chat is a lightweight, single-user, local chat application for int
 
 ## Contributing
 
-This project is meant to be a simple starting point for developers to build their own Claude-powered chat applications. Feel free to fork, modify, and share your improvements. Pull requests are welcome!
+This project is meant to be a simple starting point for developers to build their own Claude-powered chat applications. Feel free to fork, modify, and share your improvements.
 
 ## Disclaimer
 
