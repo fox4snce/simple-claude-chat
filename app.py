@@ -35,8 +35,20 @@ def chat():
             'messages': [],
             'last_updated': datetime.now().isoformat()
         }
+        total_input_tokens = 0
+        total_output_tokens = 0
     else:
-        conversation = load_conversation(current_conversation_id)
+        conversation, total_input_tokens, total_output_tokens = load_conversation(current_conversation_id)
+        if conversation is None:
+            # If the loaded conversation is None, create a new one
+            current_conversation_id = generate_conversation_id()
+            conversation = {
+                'name': 'New Conversation',
+                'messages': [],
+                'last_updated': datetime.now().isoformat()
+            }
+            total_input_tokens = 0
+            total_output_tokens = 0
 
     conversation['messages'].append({"role": "user", "content": user_message})
     full_message = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in conversation['messages']])
@@ -56,6 +68,9 @@ def chat():
     )
 
     output_tokens = client.count_tokens(response_text)
+
+    total_input_tokens += input_tokens
+    total_output_tokens += output_tokens
 
     conversation['messages'].append({"role": "assistant", "content": response_text})
     conversation['last_updated'] = datetime.now().isoformat()
@@ -90,16 +105,16 @@ def chat():
         ).strip()
         conversation['name'] = conversation_name
 
-    save_conversation(current_conversation_id, conversation)
+    save_conversation(current_conversation_id, conversation, total_input_tokens, total_output_tokens)
 
-    total_cost = calculate_cost(input_tokens, output_tokens)
+    total_cost = calculate_cost(total_input_tokens, total_output_tokens)
 
     return jsonify({
         'conversation_id': current_conversation_id,
         'conversation_name': conversation['name'],
         'response': response_text,
-        'input_tokens': input_tokens,
-        'output_tokens': output_tokens,
+        'input_tokens': total_input_tokens,
+        'output_tokens': total_output_tokens,
         'total_cost': total_cost
     })
 
@@ -108,10 +123,17 @@ def set_current_conversation():
     global current_conversation_id
     data = request.get_json()
     conversation_id = data['conversation_id']
-    conversation = load_conversation(conversation_id)
+    conversation, input_tokens, output_tokens = load_conversation(conversation_id)
     if conversation:
         current_conversation_id = conversation_id
-        return jsonify({'status': 'success', 'conversation': conversation})
+        total_cost = calculate_cost(input_tokens, output_tokens)
+        return jsonify({
+            'status': 'success', 
+            'conversation': conversation, 
+            'input_tokens': input_tokens, 
+            'output_tokens': output_tokens,
+            'total_cost': total_cost
+        })
     else:
         return jsonify({'status': 'error', 'message': 'Conversation not found'}), 404
 

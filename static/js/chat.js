@@ -83,7 +83,7 @@ function addMessage(sender, text) {
 }
 
 function updateTokenInfo(data) {
-    tokenInfo.textContent = `Input tokens: ${data.input_tokens} | Output tokens: ${data.output_tokens}`;
+    tokenInfo.textContent = `Total Input tokens: ${data.input_tokens} | Total Output tokens: ${data.output_tokens}`;
 }
 
 function updateCostInfo(data) {
@@ -267,6 +267,8 @@ function loadConversation(conversationId) {
             data.conversation.messages.forEach(msg => {
                 addMessage(msg.role, msg.content);
             });
+            updateTokenInfo(data);
+            updateCostInfo(data);
         }
     })
     .catch(error => {
